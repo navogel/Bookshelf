@@ -42,6 +42,47 @@ namespace Bookshelf35.Data
             var passwordHash = new PasswordHasher<ApplicationUser>();
             user.PasswordHash = passwordHash.HashPassword(user, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(user);
+
+            //create Authors
+            Author author1 = new Author
+            {
+                Id = 1,
+                Name = "Jimmy John",
+                ApplicationUserId = user.Id
+            };
+            modelBuilder.Entity<Author>().HasData(author1);
+
+            Author author2 = new Author
+            {
+                Id = 2,
+                Name = "Jersey Mike",
+                ApplicationUserId = user.Id
+            };
+            modelBuilder.Entity<Author>().HasData(author2);
+
+            Book jonBook = new Book
+            {
+                Id = 1,
+                Title = "Free Smells",
+                Genre = "Sammys",
+                YearPublished = 1990,
+                AuthorId = author1.Id,
+                Rating = 10,
+                ApplicationUserId = user.Id
+            };
+            modelBuilder.Entity<Book>().HasData(jonBook);
+
+            Book wooBook = new Book
+            {
+                Id = 2,
+                Title = "HeHaw the complete History",
+                Genre = "Sammys",
+                YearPublished = 1999,
+                AuthorId = author2.Id,
+                Rating = 1,
+                ApplicationUserId = user.Id
+            };
+            modelBuilder.Entity<Book>().HasData(wooBook);
         }
     }
 
