@@ -46,9 +46,14 @@ namespace Bookshelf35.Controllers
             {
                 return NotFound();
             }
-
+            var user = await GetCurrentUserAsync();
+          
             var author = await _context.Author
+                
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            author.Books = _context.Book.Where(b => b.AuthorId == id && b.ApplicationUserId == user.Id).ToList();
+
             if (author == null)
             {
                 return NotFound();

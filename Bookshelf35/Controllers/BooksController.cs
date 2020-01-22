@@ -24,10 +24,21 @@ namespace Bookshelf35.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]string q)
         {
-            var applicationDbContext = _context.Book.Include(b => b.ApplicationUser).Include(b => b.Author);
-            return View(await applicationDbContext.ToListAsync());
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var query = _context.Book
+                    .Include(b => b.Author)
+                    .Where(b => b.Title.Contains(q) || b.Author.Name.Contains(q));
+                return View(await query.ToListAsync());
+            }
+            else
+            {
+                var applicationDbContext = _context.Book.Include(b => b.ApplicationUser).Include(b => b.Author);
+                return View(await applicationDbContext.ToListAsync());
+            }
+            
         }
 
         // GET: Books/Details/5
